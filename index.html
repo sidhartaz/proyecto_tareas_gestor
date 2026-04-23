@@ -1,27 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tablero kanban</title>
-    
+    <title>kanban</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+
 </head>
 <body>
-    <label for="descripcion">Descripción:</label>  
-<textarea id="descripcion" required></textarea>  
- 
-<label for="prioridad">Prioridad:</label>  
-<select id="prioridad" required>  
-    <option value="">Seleccionar...</option>  
-    <option value="alta">Alta</option>  
-    <option value="media">Media</option>  
-    <option value="baja">Baja</option>  
-</select>  
- 
-<label for="fecha">Fecha límite:</label>  
-<input type="date" id="fecha" required>  
- 
-<button type="submit">Agregar Tarea</button>  
- 
+    <header>
+        <div class="logo">
+            <h1>flujo de tarea</h1>
+        </div>
+        <nav>
+            <a href="#agregar">Nueva Tarea</a>
+            <a href="#tablero">tablero</a>
+            <a href="#contacto">Contacto</a>
+        </nav>
+    </header>
+
+    <div class="container">
+         <div id="agregar">
+              <h2>Agregar Nueva Tarea</h2>
+              <form id="nuevaTarea" onsubmit="agregarTarea(event)">
+
+                <label for="descripcion">descripción:</label>
+                <textarea id="descripcion"required></textarea>
+                <label for="prioridad">prioridad:</label>
+                <select id="prioridad" required>
+                    <option value="alta">Alta</option>
+                    <option value="media">Media</option>
+                    <option value="baja">Baja</option>
+                </select>
+                <label for="fecha">Fecha límite:</label>
+                <input type="date" id="fecha" required>
+                <button type="submit">Agregar Tarea</button>
+
+              </form>
+
+         </div>
+    </div>
+    <div id="tablero">
+        <h2>Tablero de Tareas</h2>
+        <div class="kanban">
+            <div class="columna" id="pendientes">
+                <h3>Pendientes <span class="contador">0</span></h3>
+                <div class="tareas-container" id="todoContainer"></div>
+            </div>
+            <div class="columna" id="en-progreso">
+                <h3>En progreso <spam class="contador">0</spam></h3>
+                <div class="tareas-container" id="doingContainer"></div>
+            </div>
+            <div class="columna" id="completadas">
+                <h3>Completadas <span class="contador">0</span></h3>
+                <div class="tareas-container" id="donecontainer"></div>
+            </div>
+            
+        </div>
+        <footer id="contacto">
+            <p>Desarrollado por Carlos Sepúlveda</p>
+            <p>csepulveda2025@alu.uct.cl</p>
+            <p>Desarrollo wed </p>
+        </footer>
+
+
+    <script src ="assets/js/scripts.js"></script> 
 </body>
 </html>
