@@ -20,7 +20,7 @@ Durante el desarrollo de este proyecto se utilizó el modelo de lenguaje **Claud
 ### Error 1 — Las tareas no se agregaban al tablero
 
 **Prompt utilizado:**
-> "no agrega tarea"
+> "no puedo agregar las tereas cual puede ser mi error explicame "
 
 **Respuesta de la IA:**
 
@@ -41,17 +41,12 @@ document.addEventListener("DOMContentLoaded", function() {
     renderizarTareas("done");
     actualizarContadores();
 });
-```
-
-> 📸 **[INSERTAR CAPTURA: Consola del navegador mostrando el error]**  
-> 📸 **[INSERTAR CAPTURA: Código corregido en VS Code]**
-
 ---
 
 ### Error 2 — ReferenceError: función no definida
 
 **Prompt utilizado:**
-> "as funcione el script js"
+> "el script presenta un error explicame como solucinarlo"
 
 **Error que aparecía en consola:**
 ```
@@ -85,15 +80,13 @@ function eliminarTarea(id) { ... }
 function actualizarContadores() { ... }
 ```
 
-> 📸 **[INSERTAR CAPTURA: Error TypeError en consola]**  
-> 📸 **[INSERTAR CAPTURA: Código corregido con funciones en ámbito global]**
 
 ---
 
 ### Error 3 — Columnas del tablero quedaban una encima de la otra
 
 **Prompt utilizado:**
-> "quendan un encima de la otra"
+> "columnas apiladas verticalmente cual es el error explicame como resolverlo"
 
 **Respuesta de la IA:**
 
@@ -119,16 +112,12 @@ La IA identificó que el CSS tenía `display: inline` en lugar de `display: flex
     min-width: 0;
 }
 ```
-
-> 📸 **[INSERTAR CAPTURA: Tablero con columnas apiladas (antes)]**  
-> 📸 **[INSERTAR CAPTURA: Tablero con columnas en fila (después)]**
-
 ---
 
 ### Error 4 — Imagen del logo aparecía arriba en lugar de al lado del título
 
 **Prompt utilizado:**
-> "esta arriba no al lado"
+> "la imagen no se visualiza que error tiene mi codigo"
 
 **Respuesta de la IA:**
 
@@ -150,10 +139,6 @@ La IA identificó que el `<img>` estaba dentro del `<head>` del HTML en lugar de
     <nav>...</nav>
 </header>
 ```
-
-> 📸 **[INSERTAR CAPTURA: HTML con imagen mal ubicada en el head]**  
-> 📸 **[INSERTAR CAPTURA: Logo correcto al lado del título en el navegador]**
-
 ---
 
 ### Error 5 — Tag `<spam>` en lugar de `<span>`
@@ -172,23 +157,9 @@ Al revisar el HTML completo, la IA detectó un error tipográfico en la columna 
 <!-- CORRECTO -->
 <h3>En Progreso <span class="contador">0</span></h3>
 ```
-
-> 📸 **[INSERTAR CAPTURA: HTML con el error spam en VS Code]**  
-> 📸 **[INSERTAR CAPTURA: Contador funcionando correctamente]**
-
 ---
 
-## 3. Ajustes Manuales Realizados
-
-- Personalización del nombre del proyecto a "Flujo de Tarea"
-- Ingreso de datos personales en el footer (nombre y correo)
-- Selección de imagen de logo propia
-- Organización de la estructura de carpetas del proyecto
-- Inicialización del repositorio Git y conexión con GitHub
-
----
-
-## 4. Reflexión Crítica
+## 3. Reflexión Crítica
 
 **Aspectos positivos:**
 - La IA explicó con claridad los conceptos de ámbito (scope) en JavaScript, permitiendo entender por qué las funciones no eran accesibles desde el HTML.
