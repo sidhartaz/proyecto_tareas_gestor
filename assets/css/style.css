@@ -25,6 +25,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    
 }
 
 body {
@@ -39,13 +40,19 @@ header {
     color: white;
     padding: var(--espacio-sm) var(--espacio-lg);
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; 
     align-items: center;
+    position: relative;
+    border-radius: 8px;
 }
+
+
+
 
 header .logo h1 {
     font-size: 1.5rem;
     font-weight: 700;
+    text-align: center;
 }
 
 header nav {
@@ -67,8 +74,11 @@ header nav a:hover {
 }
 main {
     max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
     padding: var(--espacio-md);
+    align-self: center;
+    
 }
 
 #agregar {
@@ -77,22 +87,37 @@ main {
     border-radius: 10px;
     margin-bottom: var(--espacio-lg);
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--color-secundario);
+    width: 100%;
+    max-width: 500px; /* límite en PC */
+    margin: 0 auto;
+   
 }
 
 #agregar h2 {
     margin-bottom: var(--espacio-sm);
     color: var(--color-primario);
+    text-align: center;
+    margin: 0 auto;  
+    margin-bottom: var(--espacio-sm);
+    color: var(--color-primario);
+    text-align: center;
+    
 }
 
 #nuevaTareaFormulario {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+    align-self: center;
 }
 
 #nuevaTareaFormulario label {
     font-weight: 600;
     font-size: 0.9rem;
+    align-self: center;
 }
 
 #nuevaTareaFormulario textarea,
@@ -103,7 +128,8 @@ main {
     border-radius: 6px;
     font-size: 1rem;
     font-family: var(--fuente-principal);
-    width: 100%;
+    width: max-content;
+    align-self: center;
 }
 
 #nuevaTareaFormulario textarea:focus,
@@ -117,11 +143,14 @@ main {
     background-color: var(--color-primario);
     color: white;
     border: none;
-    padding: 0.7rem;
+    padding: 0.4rem 0.6rem;
     border-radius: 6px;
-    font-size: 1rem;
+    font-size: 0.85rem;
+    width: max-content;   
     cursor: pointer;
     transition: background-color 0.2s;
+    margin-top: 10px;
+    align-self: center;
 }
 
 #nuevaTareaFormulario button[type="submit"]:hover {
@@ -130,20 +159,25 @@ main {
 #tablero h2 {
     margin-bottom: var(--espacio-sm);
     color: var(--color-primario);
+    text-align: center;
+    margin-top: 20px; /* separación hacia arriba */
 }
 
 .kanban {
     display: flex;
     gap: var(--espacio-sm);
+    justify-content: center;
 }
 
 .columna {
-    flex: 1;
-    background-color: white;
-    border-radius: 8px;
-    padding: var(--espacio-sm);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    min-height: 400px;
+  flex: 0 0 300px; /* ancho controlado */
+  background-color: white;
+  border-radius: 8px;
+  padding: var(--espacio-sm);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  min-height: 400px; /* mínimo */
+  height: auto;      /* crece libremente */
+    
 }
 
 .columna h3 {
@@ -156,17 +190,23 @@ main {
     align-items: center;
 }
 
-/* Color distinto en el borde superior de cada columna */
+/* Color distinto en el borde cada columna */
 #pendientes {
-    border-top: 4px solid var(--color-pendiente);
+border-width: 2px;
+border-style: solid;
+border-color: var(--color-pendiente);
 }
 
 #en-progreso {
-    border-top: 4px solid var(--color-progreso);
+border-width: 2px;
+border-style: solid;
+border-color: var(--color-progreso);
 }
 
 #completadas {
-    border-top: 4px solid var(--color-completado);
+border-width: 2px;
+border-style: solid;
+border-color: var(--color-completado);
 }
 
 /* El contador del número de tareas */
@@ -199,15 +239,21 @@ main {
 
 /* Color del borde según prioridad */
 .prioridad-alta {
-    border-left-color: var(--color-alta);
+border-width: 2px;
+border-style: solid;
+border-color: var(--color-secundario);
 }
 
 .prioridad-media {
-    border-left-color: var(--color-media);
+border-width: 2px;
+border-style: solid;
+border-color: var(--color-secundario);
 }
 
 .prioridad-baja {
-    border-left-color: var(--color-baja);
+border-width: 2px;
+border-style: solid;
+border-color: var(--color-secundario);
 }
 
 /* Badge de prioridad */
@@ -267,13 +313,18 @@ main {
     background-color: #fecaca;
 }
 footer {
-    background-color: #1e293b;
-    color: #94a3b8;
+    background-color:var(--color-primario);
+    color: #ffffff;
     text-align: center;
     padding: var(--espacio-md);
     margin-top: var(--espacio-lg);
     font-size: 0.9rem;
     line-height: 2;
+    max-width: 500px; /* límite */
+    width: 100%;      /* adaptable */
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 8px;
 }
 
 footer strong {
@@ -282,12 +333,15 @@ footer strong {
 .logo {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 20px;
 }
 
 .logo-img {
-    width: 200px;
-    height: 90px;
+    width: 100px;
+    height: auto;
     border-radius: 6px;
     object-fit: contain;
 }

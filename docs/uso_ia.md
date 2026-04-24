@@ -9,7 +9,7 @@
 
 ## 1. Introducción
 
-Durante el desarrollo de este proyecto se utilizó el modelo de lenguaje **Claude Sonnet 4.6** como herramienta de apoyo. La IA fue consultada en distintas etapas del proceso: estructuración del HTML, estilización CSS y depuración de errores en JavaScript. Este documento registra los errores de lógica más relevantes encontrados, los prompts utilizados, las respuestas obtenidas y los ajustes manuales realizados.
+Durante el desarrollo de este proyecto se utilizó el modelo de lenguaje **Claude Sonnet 4.6** como herramienta de apoyo. La IA fue consultada en distintas etapas del proceso: estructuración del HTML, estilización CSS y depuración de errores en JavaScript. Este documento registra los prompts reales utilizados, las respuestas obtenidas y los ajustes manuales realizados.
 
 ---
 
@@ -17,81 +17,58 @@ Durante el desarrollo de este proyecto se utilizó el modelo de lenguaje **Claud
 
 ---
 
-### Error 1 — ReferenceError: función no definida
-
-**Descripción del error:**  
-Al intentar enviar el formulario, el navegador arrojaba el siguiente error en la consola:
-
-```
-Uncaught ReferenceError: agregarTarea is not defined
-    onsubmit http://127.0.0.1:5500/index.html:1
-```
-
-**Causa del error:**  
-El atributo `onsubmit` del formulario en el HTML llamaba a una función con nombre distinto al definido en el archivo JavaScript. El HTML tenía:
-
-```html
-<form id="nuevaTarea" onsubmit="agregarTarea(event)">
-```
-
-Mientras que en `script.js` la función se llamaba:
-
-```javascript
-function agregarNuevaTarea(e) { ... }
-```
-
-El navegador buscaba `agregarTarea` y no la encontraba porque no existía con ese nombre exacto.
+### Error 1 — Las tareas no se agregaban al tablero
 
 **Prompt utilizado:**
-> "Uncaught ReferenceError: agregarTarea is not defined onsubmit — por qué no agrega las tareas"
+> "no agrega tarea"
 
-**Respuesta de la IA:**  
-La IA identificó que el nombre de la función en el `onsubmit` no coincidía con el nombre definido en el JS, y que además el `id` del formulario era diferente al que el JS intentaba resetear.
+**Respuesta de la IA:**
 
-**Solución aplicada:**  
-Se corrigió el HTML para que el nombre de la función y el id del formulario coincidieran exactamente:
+La IA identificó que las 3 llamadas iniciales a `renderizarTareas` se ejecutaban antes de que el HTML estuviera cargado. La solución fue envolverlas en `DOMContentLoaded`:
 
-```html
-<!-- ANTES (incorrecto) -->
-<form id="nuevaTarea" onsubmit="agregarTarea(event)">
+```javascript
+// ANTES — se ejecutaba antes de que el HTML estuviera listo
+let tareas = [];
+renderizarTareas("todo");
+renderizarTareas("doing");
+renderizarTareas("done");
 
-<!-- DESPUÉS (correcto) -->
-<form id="nuevaTareaFormulario" onsubmit="agregarNuevaTarea(event)">
+// DESPUÉS — espera que el HTML cargue primero
+let tareas = [];
+document.addEventListener("DOMContentLoaded", function() {
+    renderizarTareas("todo");
+    renderizarTareas("doing");
+    renderizarTareas("done");
+    actualizarContadores();
+});
 ```
 
-> 📸 **[INSERTAR CAPTURA: Consola del navegador mostrando el ReferenceError]**  
+> 📸 **[INSERTAR CAPTURA: Consola del navegador mostrando el error]**  
 > 📸 **[INSERTAR CAPTURA: Código corregido en VS Code]**
 
 ---
 
-### Error 2 — Las funciones no eran accesibles desde el HTML
-
-**Descripción del error:**  
-Luego de envolver el código inicial en `DOMContentLoaded`, el formulario dejó de funcionar completamente. La consola mostraba:
-
-```
-TypeError: agregarNuevaTarea is not defined
-```
-
-**Causa del error:**  
-Al colocar todas las funciones dentro del bloque `DOMContentLoaded`, estas quedaban encerradas en un ámbito local (scope) y el atributo `onsubmit` del HTML no podía acceder a ellas, ya que `onsubmit` solo puede llamar funciones del ámbito global.
-
-```javascript
-// INCORRECTO — funciones atrapadas adentro
-document.addEventListener("DOMContentLoaded", function() {
-    function agregarNuevaTarea(e) { ... }  // no accesible desde HTML
-});
-```
+### Error 2 — ReferenceError: función no definida
 
 **Prompt utilizado:**
-> "TypeError: agregarNuevaTarea is not defined — las funciones están dentro del DOMContentLoaded"
+> "as funcione el script js"
 
-**Respuesta de la IA:**  
-La IA explicó el concepto de ámbito (scope) en JavaScript: las funciones declaradas dentro de un bloque no son visibles desde fuera. La solución fue sacar las funciones al ámbito global y dejar solo las llamadas iniciales dentro del evento.
+**Error que aparecía en consola:**
+```
+Uncaught ReferenceError: agregarNuevaTarea is not defined
+TypeError: "x" is (not) "y"
+```
 
-**Solución aplicada:**
+**Respuesta de la IA:**
+
+La IA explicó que al poner todas las funciones dentro de `DOMContentLoaded`, estas quedaban encerradas en un ámbito local y el atributo `onsubmit` del HTML no podía acceder a ellas. La solución fue sacar las funciones afuera:
 
 ```javascript
+// INCORRECTO — funciones atrapadas adentro, HTML no las ve
+document.addEventListener("DOMContentLoaded", function() {
+    function agregarNuevaTarea(e) { ... }
+});
+
 // CORRECTO — solo las llamadas iniciales adentro
 document.addEventListener("DOMContentLoaded", function() {
     renderizarTareas("todo");
@@ -100,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function() {
     actualizarContadores();
 });
 
-// Funciones en el ámbito global
+// Funciones en el ámbito global, accesibles desde el HTML
 function agregarNuevaTarea(e) { ... }
 function renderizarTareas(estado) { ... }
 function cambiarEstado(id, estadoAnterior) { ... }
@@ -108,18 +85,19 @@ function eliminarTarea(id) { ... }
 function actualizarContadores() { ... }
 ```
 
-> 📸 **[INSERTAR CAPTURA: Error en consola mostrando TypeError]**  
+> 📸 **[INSERTAR CAPTURA: Error TypeError en consola]**  
 > 📸 **[INSERTAR CAPTURA: Código corregido con funciones en ámbito global]**
 
 ---
 
 ### Error 3 — Columnas del tablero quedaban una encima de la otra
 
-**Descripción del error:**  
-Las 3 columnas del tablero Kanban no se mostraban lado a lado, sino apiladas verticalmente una encima de la otra.
+**Prompt utilizado:**
+> "quendan un encima de la otra"
 
-**Causa del error:**  
-El CSS tenía `display: inline` en el contenedor `.kanban`, lo cual no permite distribuir elementos en fila. Además faltaba `min-width: 0` en las columnas, lo que impedía que `flex` funcionara correctamente.
+**Respuesta de la IA:**
+
+La IA identificó que el CSS tenía `display: inline` en lugar de `display: flex`. Además faltaba `flex-direction: row` y `min-width: 0` en las columnas:
 
 ```css
 /* INCORRECTO */
@@ -127,17 +105,7 @@ El CSS tenía `display: inline` en el contenedor `.kanban`, lo cual no permite d
     display: inline;
     gap: var(--espacio-sm);
 }
-```
 
-**Prompt utilizado:**
-> "Las columnas quedan una encima de la otra, cómo las pongo lado a lado"
-
-**Respuesta de la IA:**  
-La IA explicó que `display: inline` no soporta `gap` ni distribuye elementos en fila. La solución correcta es `display: flex` con `flex-direction: row`.
-
-**Solución aplicada:**
-
-```css
 /* CORRECTO */
 .kanban {
     display: flex;
@@ -157,13 +125,45 @@ La IA explicó que `display: inline` no soporta `gap` ni distribuye elementos en
 
 ---
 
-### Error 4 — Tag HTML incorrecto `<spam>` en lugar de `<span>`
+### Error 4 — Imagen del logo aparecía arriba en lugar de al lado del título
 
-**Descripción del error:**  
-El contador de tareas en la columna "En Progreso" no se actualizaba y la función `actualizarContadores()` fallaba silenciosamente.
+**Prompt utilizado:**
+> "esta arriba no al lado"
 
-**Causa del error:**  
-El tag `<spam>` es incorrecto y no existe en HTML. El navegador no lo reconoce como `<span>`, por lo que el selector CSS `.contador` no aplicaba estilos y el JavaScript no podía encontrar el elemento.
+**Respuesta de la IA:**
+
+La IA identificó que el `<img>` estaba dentro del `<head>` del HTML en lugar de dentro del `<div class="logo">`. El `<head>` es solo para configuración, las imágenes siempre van dentro del `<body>`:
+
+```html
+<!-- INCORRECTO — imagen dentro del head -->
+<head>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <img src="assets/img/Sin título.png" alt="Logo" class="logo-img">
+</head>
+
+<!-- CORRECTO — imagen dentro del logo en el header -->
+<header>
+    <div class="logo">
+        <img src="assets/img/Sin título.png" alt="Logo" class="logo-img">
+        <h1>Flujo de Tarea</h1>
+    </div>
+    <nav>...</nav>
+</header>
+```
+
+> 📸 **[INSERTAR CAPTURA: HTML con imagen mal ubicada en el head]**  
+> 📸 **[INSERTAR CAPTURA: Logo correcto al lado del título en el navegador]**
+
+---
+
+### Error 5 — Tag `<spam>` en lugar de `<span>`
+
+**Prompt utilizado:**
+> (detectado durante revisión del HTML completo por la IA)
+
+**Respuesta de la IA:**
+
+Al revisar el HTML completo, la IA detectó un error tipográfico en la columna "En Progreso". El tag `<spam>` no existe en HTML, por lo que el contador no se actualizaba:
 
 ```html
 <!-- INCORRECTO -->
@@ -173,57 +173,16 @@ El tag `<spam>` es incorrecto y no existe en HTML. El navegador no lo reconoce c
 <h3>En Progreso <span class="contador">0</span></h3>
 ```
 
-**Prompt utilizado:**
-> "El contador de en-progreso no se actualiza"
-
-**Respuesta de la IA:**  
-Al revisar el HTML completo, la IA detectó el error tipográfico `<spam>` y explicó que el navegador no lo interpreta como un elemento válido conocido, por lo que el querySelector no lo encontraba.
-
-**Solución aplicada:**  
-Se corrigió el tag a `<span>` en la columna "En Progreso".
-
 > 📸 **[INSERTAR CAPTURA: HTML con el error spam en VS Code]**  
-> 📸 **[INSERTAR CAPTURA: HTML corregido con span]**
-
----
-
-### Error 5 — id del contenedor con mayúscula incorrecta
-
-**Descripción del error:**  
-Las tareas completadas nunca aparecían en la tercera columna aunque el JS las procesaba correctamente.
-
-**Causa del error:**  
-El `id` del contenedor en el HTML tenía la letra `c` en minúscula (`donecontainer`), pero el JavaScript construía el selector con `C` mayúscula (`doneContainer`). JavaScript distingue entre mayúsculas y minúsculas, por lo que `getElementById("doneContainer")` no encontraba el elemento.
-
-```html
-<!-- INCORRECTO -->
-<div class="tareas-container" id="donecontainer"></div>
-
-<!-- CORRECTO -->
-<div class="tareas-container" id="doneContainer"></div>
-```
-
-**Prompt utilizado:**
-> "Las tareas completadas no aparecen en la tercera columna"
-
-**Respuesta de la IA:**  
-La IA revisó los `id` del HTML y los comparó con los que el JavaScript buscaba mediante `getElementById(estado + "Container")`, detectando la diferencia de mayúscula.
-
-**Solución aplicada:**  
-Se corrigió el `id` a `doneContainer` con C mayúscula.
-
-> 📸 **[INSERTAR CAPTURA: HTML con el id incorrecto]**  
-> 📸 **[INSERTAR CAPTURA: HTML corregido]**
+> 📸 **[INSERTAR CAPTURA: Contador funcionando correctamente]**
 
 ---
 
 ## 3. Ajustes Manuales Realizados
 
-Los siguientes cambios fueron realizados manualmente por el alumno sin asistencia de la IA:
-
 - Personalización del nombre del proyecto a "Flujo de Tarea"
 - Ingreso de datos personales en el footer (nombre y correo)
-- Ajuste de colores del CSS según preferencia visual
+- Selección de imagen de logo propia
 - Organización de la estructura de carpetas del proyecto
 - Inicialización del repositorio Git y conexión con GitHub
 
@@ -231,21 +190,17 @@ Los siguientes cambios fueron realizados manualmente por el alumno sin asistenci
 
 ## 4. Reflexión Crítica
 
-El uso de la IA fue de gran utilidad durante el desarrollo, especialmente en la etapa de depuración. Sin embargo, se identificaron las siguientes limitaciones:
-
 **Aspectos positivos:**
-- La IA explicó con claridad los conceptos de ámbito (scope) en JavaScript, lo que permitió comprender por qué las funciones no eran accesibles desde el HTML.
-- Fue eficiente para detectar errores tipográficos en el HTML como el tag `<spam>` y la diferencia de mayúsculas en los `id`.
-- Las explicaciones fueron progresivas y adaptadas al nivel del proyecto.
+- La IA explicó con claridad los conceptos de ámbito (scope) en JavaScript, permitiendo entender por qué las funciones no eran accesibles desde el HTML.
+- Fue útil para detectar errores tipográficos como `<spam>` y problemas de ubicación de elementos HTML.
+- Las explicaciones comparaban siempre el código incorrecto con el correcto, lo que facilitó la comprensión.
 
 **Aspectos a mejorar:**
-- La IA en ocasiones propuso soluciones que generaban nuevos errores, como encerrar todas las funciones dentro de `DOMContentLoaded`, lo que requirió una corrección posterior.
-- Fue necesario revisar manualmente cada sugerencia antes de implementarla, ya que no todas consideraban el contexto completo del proyecto.
-- El alumno debió identificar algunos errores por su cuenta antes de poder formular el prompt correcto.
+- La IA propuso usar `DOMContentLoaded` encerrando todas las funciones adentro, lo que generó un nuevo error que requirió corrección posterior.
+- Algunas soluciones debieron ajustarse manualmente ya que no consideraban el contexto exacto del proyecto.
+- Fue necesario reformular los prompts varias veces para obtener la respuesta correcta.
 
 **Conclusión:**  
-La IA es una herramienta de apoyo valiosa, pero no reemplaza la comprensión del código. Los errores más importantes fueron resueltos gracias a la combinación entre las sugerencias de la IA y el análisis crítico del alumno.
+La IA fue una herramienta de apoyo valiosa durante el desarrollo, pero no reemplaza la comprensión del código. Los errores más importantes fueron resueltos combinando las sugerencias de la IA con el análisis propio del alumno.
 
 ---
-
-*Documento generado como parte de la Evaluación N°2 — Desarrollo Web 2025*

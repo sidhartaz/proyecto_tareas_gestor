@@ -13,20 +13,24 @@
 @media (max-width: 600px) {
     .kanban {
         flex-direction: column;
+        gap: var(--espacio-sm);
     }
 
     .columna {
         flex: 1 1 100%;
     }
 
-    header {
-        flex-direction: column;
-        gap: 0.8rem;
-        text-align: center;
-    }
-
     main {
         padding: var(--espacio-sm);
+    }
+        header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .logo {
+        position: static;
+        transform: none;
     }
 }
 /* pantallas grandes */
