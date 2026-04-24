@@ -1,0 +1,31 @@
+/* TABLET — 2 columnas */
+@media (max-width: 900px) {
+    .kanban {
+        flex-wrap: wrap;
+    }
+
+    .columna {
+        flex: 1 1 45%;
+    }
+}
+
+/* MÓVIL — 1 columna */
+@media (max-width: 600px) {
+    .kanban {
+        flex-direction: column;
+    }
+
+    .columna {
+        flex: 1 1 100%;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 0.8rem;
+        text-align: center;
+    }
+
+    main {
+        padding: var(--espacio-sm);
+    }
+}

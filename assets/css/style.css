@@ -1,0 +1,283 @@
+:root {
+    /* Colores principales */
+    --color-primario: #2563eb;
+    --color-secundario: #7c3aed;
+    --color-terciario: #10b981;
+
+    /* Colores de cada columna */
+    --color-pendiente: #3b82f6;
+    --color-progreso: #f59e0b;
+    --color-completado: #10b981;
+
+    /* Colores de prioridad */
+    --color-alta: #ef4444;
+    --color-media: #f59e0b;
+    --color-baja: #10b981;
+
+    /* Tipografía */
+    --fuente-principal: 'Segoe UI', system-ui, sans-serif;
+
+    /* Espaciado */
+    --espacio-sm: 1rem;
+    --espacio-md: 1.5rem;
+    --espacio-lg: 2rem;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--fuente-principal);
+    background-color: #f1f5f9;
+    color: #1e293b;
+}
+
+header {
+    background-color: var(--color-primario);
+    color: white;
+    padding: var(--espacio-sm) var(--espacio-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+header nav {
+    display: flex;
+    gap: var(--espacio-sm);
+}
+
+header nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+header nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--espacio-md);
+}
+
+#agregar {
+    background-color: white;
+    padding: var(--espacio-md);
+    border-radius: 10px;
+    margin-bottom: var(--espacio-lg);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+#agregar h2 {
+    margin-bottom: var(--espacio-sm);
+    color: var(--color-primario);
+}
+
+#nuevaTareaFormulario {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+#nuevaTareaFormulario label {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+#nuevaTareaFormulario textarea,
+#nuevaTareaFormulario select,
+#nuevaTareaFormulario input[type="date"] {
+    padding: 0.6rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: var(--fuente-principal);
+    width: 100%;
+}
+
+#nuevaTareaFormulario textarea:focus,
+#nuevaTareaFormulario select:focus,
+#nuevaTareaFormulario input[type="date"]:focus {
+    outline: none;
+    border-color: var(--color-primario);
+}
+
+#nuevaTareaFormulario button[type="submit"] {
+    background-color: var(--color-primario);
+    color: white;
+    border: none;
+    padding: 0.7rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#nuevaTareaFormulario button[type="submit"]:hover {
+    background-color: #1d4ed8;
+}
+#tablero h2 {
+    margin-bottom: var(--espacio-sm);
+    color: var(--color-primario);
+}
+
+.kanban {
+    display: flex;
+    gap: var(--espacio-sm);
+}
+
+.columna {
+    flex: 1;
+    background-color: white;
+    border-radius: 8px;
+    padding: var(--espacio-sm);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    min-height: 400px;
+}
+
+.columna h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    padding-bottom: 0.6rem;
+    margin-bottom: var(--espacio-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Color distinto en el borde superior de cada columna */
+#pendientes {
+    border-top: 4px solid var(--color-pendiente);
+}
+
+#en-progreso {
+    border-top: 4px solid var(--color-progreso);
+}
+
+#completadas {
+    border-top: 4px solid var(--color-completado);
+}
+
+/* El contador del número de tareas */
+.contador {
+    background-color: #e2e8f0;
+    color: #475569;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+.tarjeta {
+    background-color: #f8fafc;
+    border-radius: 8px;
+    padding: 0.8rem;
+    margin-bottom: 0.8rem;
+    border-left: 4px solid #cbd5e1;
+}
+
+.tarjeta p {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.tarjeta .info {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-bottom: 0.6rem;
+}
+
+/* Color del borde según prioridad */
+.prioridad-alta {
+    border-left-color: var(--color-alta);
+}
+
+.prioridad-media {
+    border-left-color: var(--color-media);
+}
+
+.prioridad-baja {
+    border-left-color: var(--color-baja);
+}
+
+/* Badge de prioridad */
+.badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 0.5rem;
+}
+
+.badge-alta {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.badge-media {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.badge-baja {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+/* Botones dentro de la tarjeta */
+.tarjeta .btn-avanzar {
+    background-color: var(--color-primario);
+    color: white;
+    border: none;
+    padding: 0.4rem 0.7rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    margin-right: 0.4rem;
+    transition: background-color 0.2s;
+}
+
+.tarjeta .btn-avanzar:hover {
+    background-color: #1d4ed8;
+}
+
+.tarjeta .btn-eliminar {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: none;
+    padding: 0.4rem 0.7rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.tarjeta .btn-eliminar:hover {
+    background-color: #fecaca;
+}
+footer {
+    background-color: #1e293b;
+    color: #94a3b8;
+    text-align: center;
+    padding: var(--espacio-md);
+    margin-top: var(--espacio-lg);
+    font-size: 0.9rem;
+    line-height: 2;
+}
+
+footer strong {
+    color: white;
+}
