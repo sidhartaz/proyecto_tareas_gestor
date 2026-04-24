@@ -286,8 +286,8 @@ footer strong {
 }
 
 .logo-img {
-    width: 70px;
-    height: 70px;
+    width: 200px;
+    height: 90px;
     border-radius: 6px;
     object-fit: contain;
 }
