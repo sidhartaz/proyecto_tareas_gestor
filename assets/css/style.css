@@ -4,20 +4,17 @@
     --color-secundario: #7c3aed;
     --color-terciario: #10b981;
 
-    /* Colores de cada columna */
+    /* Colores de estado */
     --color-pendiente: #3b82f6;
     --color-progreso: #f59e0b;
     --color-completado: #10b981;
 
-    /* Colores de prioridad */
-    --color-alta: #ef4444;
-    --color-media: #f59e0b;
-    --color-baja: #10b981;
-
     /* Tipografía */
     --fuente-principal: 'Segoe UI', system-ui, sans-serif;
+    --tamano-base: 16px;
 
     /* Espaciado */
+    --espacio-xs: 0.5rem;
     --espacio-sm: 1rem;
     --espacio-md: 1.5rem;
     --espacio-lg: 2rem;
@@ -32,6 +29,7 @@
 
 body {
     font-family: var(--fuente-principal);
+    font-size: var(--tamano-base); 
     background-color: #f1f5f9;
     color: #1e293b;
 }
@@ -67,7 +65,7 @@ header nav a {
 header nav a:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
-.container {
+main {
     max-width: 1200px;
     margin: 0 auto;
     padding: var(--espacio-md);
@@ -280,4 +278,16 @@ footer {
 
 footer strong {
     color: white;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 6px;
+    object-fit: contain;
 }

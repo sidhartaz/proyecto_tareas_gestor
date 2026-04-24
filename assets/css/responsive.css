@@ -29,3 +29,9 @@
         padding: var(--espacio-sm);
     }
 }
+/* pantallas grandes */
+@media (min-width: 1200px) {
+    main {
+        max-width: 1400px;
+    }
+}
