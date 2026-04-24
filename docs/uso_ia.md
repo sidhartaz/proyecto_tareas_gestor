@@ -86,7 +86,7 @@ function actualizarContadores() { ... }
 ### Error 3 — Columnas del tablero quedaban una encima de la otra
 
 **Prompt utilizado:**
-> "columnas apiladas verticalmente cual es el error explicame como resolverlo"
+> "columnas apiladas verticalmente cual es el error explicame como solucionarlo"
 
 **Respuesta de la IA:**
 
